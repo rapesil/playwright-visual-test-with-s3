@@ -1,0 +1,45 @@
+services:
+  jenkins:
+    build: ./jenkins
+    container_name: jenkins-server
+    privileged: true
+    user: root
+    networks:
+      - integra  # Conectado à rede integra
+    restart: always
+    environment:
+      - TZ=America/Sao_Paulo
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  localstack:
+    image: localstack/localstack
+    container_name: localstack2
+    networks:
+      - integra  # Conectado à mesma rede do Jenkins
+    ports:
+      - "4566:4566"  # Porta principal do LocalStack
+    environment:
+      - SERVICES=s3   # Apenas o serviço S3 ativo
+      - DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - DEBUG=1  # Para debug de problemas
+      - PERSISTENCE=1  # 🔹 Habilita a persistência automática de dados do LocalStack
+      - BUCKETS=meu-bucket
+    volumes:
+      - localstack_data:/var/lib/localstack  # 🔹 Volume persistente para salvar os dados do S3
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+# Definição da rede
+networks:
+  integra:  # Rede compartilhada entre Jenkins e LocalStack
+
+# Volumes persistentes
+volumes:
+  jenkins_home:
+  localstack_data:

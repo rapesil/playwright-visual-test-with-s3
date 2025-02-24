@@ -1,0 +1,19 @@
+{
+  "name": "playwright-s3",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.50.1",
+    "@types/node": "^22.13.5",
+    "allure-playwright": "^3.2.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.750.0",
+    "fs": "^0.0.1-security"
+  }
+}
